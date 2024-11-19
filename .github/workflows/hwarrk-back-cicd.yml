@@ -1,6 +1,6 @@
 name: hwarrk-back
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, closed]
     branches: [dev]
     paths:
@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: 1. checkout
         uses: actions/checkout@v4
+
+      - name: 2. Configure AWS Credentials
+        id: credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ vars.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
 
       - name: 2. Set up JDK 21
         uses: actions/setup-java@v3
